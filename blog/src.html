@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>src</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<section id="table-of-contents" class="level2"><h2>Table of Contents</h2><ul><li><a href="#2022-07-30">Version Control of Large Files with <code>git-lfs</code></a></li><li><a href="#2022-07-19">How to write unit tests</a></li><li><a href="#2022-07-14">Is my application “real-time”?</a></li></ul></section><section id="version-control-of-large-files-with-git-lfs" class="level2"><h2>Version Control of Large Files with <code>git-lfs</code><a name="2022-07-30"></a></h2><hr /><p><em>2022-07-30</em></p><p><a href="https://git-lfs.github.com/">Git Large File Storage</a></p><p>Committing large files (and multiple versions of large files) can balloon the size of a repo on disk even after large files are removed from version control, since the file versions are stored in blobs in the <code>.git</code> dir as history. To mitigate this issue, we use <code>git-lfs</code> with GitHub.</p><p>The basic premise is to work around <code>git</code> by storing pointers to remotely hosted versions of the files, which are automatically replaced with the real versions by <code>git-lfs</code> on checkout.</p><p>With <code>git-lfs</code>, you can commit and pull/push large files as normal.</p><section id="qa" class="level3"><h3>Q&amp;A</h3><section id="what-if-i-dont-have-git-lfs-installed" class="level4"><h4>What if I don’t have <code>git-lfs</code> installed?</h4><p>You will check out a small file with the information needed by <code>git-lfs</code> to retrieve the file instead of the actual file.</p><p>To install <code>git-lfs</code>, instructions <a href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage">here</a>.</p><blockquote><p>Note: Debian 10, Ubuntu 18.04 and newer can just do <code>sudo apt-get install git-lfs &amp;&amp; git lfs install</code>. Mac OSX can just do <code>brew install git-lfs &amp;&amp; git lfs install</code> if <code>brew</code> is up to date.</p></blockquote><details><summary>For posterity:</summary><ol type="1"><li>Navigate to git-lfs.github.com and click Download.</li></ol><blockquote><p>Tip: For more information about alternative ways to install Git LFS for Linux, see this Getting started guide.</p></blockquote><ol start="2" type="1"><li><p>On your computer, locate and unzip the downloaded file.</p></li><li><p>Open Terminal.</p></li><li><p>Change the current working directory into the folder you downloaded and unzipped: <code>cd ~/Downloads/git-lfs-1.X.X</code></p></li></ol><blockquote><p>Note: The file path you use after cd depends on your operating system, Git LFS version you downloaded, and where you saved the Git LFS download.</p></blockquote><ol start="5" type="1"><li>To install the file, run this command:</li></ol><pre><code>./install.sh`
+Git LFS initialized.</code></pre><blockquote><p>Note: You may have to use <code>sudo ./install.sh</code> to install the file.</p></blockquote><ol start="6" type="1"><li>Verify that the installation was successful:</li></ol><pre><code>git lfs install
+Git LFS initialized.</code></pre></details><p>You only need to do this once per machine.</p></section><section id="what-file-types-are-managed-by-git-lfs-already" class="level4"><h4>What file types are managed by <code>git-lfs</code> already?</h4><p>Run <code>git lfs track</code> at the root of the repo for the most up-to-date list.</p></section><section id="i-have-a-new-file-type-i-want-to-commit-and-it-is-big-few-mb.-what-do-i-do" class="level4"><h4>I have a new file type I want to commit and it is big (&gt;~few MB). What do I do?</h4><p>If you haven’t already, don’t <code>git add</code> the new file. Make <code>git-lfs</code> track the file name/type first, then <code>git add</code> it.</p><blockquote><p>Note: GitHub recommends that you should always run these commands from the root of the repository to ensure all files of the type are caught, no matter which directory they are in. Since we already have a ton of pdfs and images squirreled away everywhere, I recommend a more targeted approach, making and versioning a <code>.gitattributes</code> file for each subdirectory. A <code>.gitattributes</code> file at the root will catch all sorts of stuff in <code>external_libs</code>, etc. You can see this at work in <code>docs/</code>.</p></blockquote><p><a href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/configuring-git-large-file-storage">More docs</a>.</p><details><summary>For posterity:</summary><p>If there are existing files in your repository that you’d like to use GitHub with, you need to first remove them from the repository and then add them to Git LFS locally. For more information, see “<a href="https://docs.github.com/en/articles/moving-a-file-in-your-repository-to-git-large-file-storage">Moving a file in your repository to Git LFS</a>.”</p><p>If there are referenced Git LFS files that did not upload successfully, you will receive an error message. For more information, see “<a href="https://docs.github.com/en/articles/resolving-git-large-file-storage-upload-failures">Resolving Git Large File Storage upload failures</a>.”</p><ol type="1"><li><p>Open Terminal.</p></li><li><p>Change your current working directory to an existing repository you’d like to use with Git LFS.</p></li><li><p>To associate a file type in your repository with Git LFS, enter <code>git lfs track</code> followed by the name of the file extension you want to automatically upload to Git LFS.</p></li></ol><p>For example, to associate a <code>.psd</code> file, enter the following command:</p><pre><code>git lfs track &quot;*.psd&quot;`
+Adding path *.psd</code></pre><p>Every file type you want to associate with Git LFS will need to be added with <code>git lfs track</code>. This command amends your repository’s <code>.gitattributes</code> file and associates large files with Git LFS.</p><blockquote><p>Note: We strongly suggest that you commit your local <code>.gitattributes</code> file into your repository. Relying on a global <code>.gitattributes</code> file associated with Git LFS may cause conflicts when contributing to other Git projects. Including the <code>.gitattributes</code> file in the repository allows people creating forks or fresh clones to more easily collaborate using Git LFS. Including the <code>.gitattributes</code> file in the repository allows Git LFS objects to optionally be included in ZIP file and tarball archives.</p></blockquote><ol start="4" type="1"><li>Add a file to the repository matching the extension you’ve associated:</li></ol><pre><code>git add path/to/file.psd</code></pre><p>Commit the file and push it to GitHub:</p><pre><code>git commit -m &quot;add file.psd&quot;
+git push</code></pre><p>You should see some diagnostic information about your file upload:</p><pre><code>Sending file.psd
+44.74 MB / 81.04 MB  55.21 % 14s
+64.74 MB / 81.04 MB  79.21 % 3s</code></pre></details></section><section id="i-want-to-convert-an-already-committed-file-to-git-lfs-tracking.-what-can-i-do" class="level4"><h4>I want to convert an already-committed file to <code>git-lfs</code> tracking. What can I do?</h4><p><a href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/moving-a-file-in-your-repository-to-git-large-file-storage">More docs</a>.</p><details><summary>For posterity:</summary><p>If you’ve set up Git LFS, and you have an existing file in your repository that needs to be tracked in Git LFS, you need to first remove it from your repository.</p><p>After installing Git LFS and configuring Git LFS tracking, you can move files from Git’s regular tracking to Git LFS. For more information, see “<a href="https://docs.github.com/en/github/managing-large-files/installing-git-large-file-storage">Installing Git Large File Storage</a>” and “<a href="https://docs.github.com/en/github/managing-large-files/configuring-git-large-file-storage">Configuring Git Large File Storage</a>.”</p><p>If there are referenced Git LFS files that did not upload successfully, you will receive an error message. For more information, see “<a href="https://docs.github.com/en/articles/resolving-git-large-file-storage-upload-failures">Resolving Git Large File Storage upload failures</a>.”</p><blockquote><p>Tip: If you get an error that “this exceeds Git LFS’s file size limit of 100 MB” when you try to push files to Git, you can use <code>git lfs migrate</code> instead of <code>filter branch</code> or the BFG Repo Cleaner, to move the large file to Git Large File Storage. For more information about the <code>git lfs migrate</code> command, see the <a href="https://github.com/blog/2384-git-lfs-2-2-0-released">Git LFS 2.2.0</a> release announcement.</p></blockquote><ol type="1"><li>Remove the file from the repository’s Git history using either the <code>filter-branch</code> command or BFG Repo-Cleaner. For detailed information on using these, see “<a href="https://docs.github.com/en/articles/removing-sensitive-data-from-a-repository">Removing sensitive data from a repository</a>.”</li><li>Configure tracking for your file and push it to Git LFS. For more information on this procedure, see “<a href="https://docs.github.com/en/articles/configuring-git-large-file-storage">Configuring Git Large File Storage</a>.”</li></ol></details></section><section id="are-there-limitations" class="level4"><h4>Are there limitations?</h4><p>GitHub imposes as 2 GB per file size limit.</p><p>Unless a local <code>git-lfs</code> host has been set up, this will not work on the ice, since files must be pulled from/pushed to an Internet server. In this case, it’s probably best to check out a repo to download all docs to local machines before leaving fast Internet access zones.</p><p><br> <br> <br></p></section></section></section><section id="how-to-write-unit-tests" class="level2"><h2>How to write unit tests <a name="2022-07-19"></a></h2><hr /><p><em>2022-07-19</em></p><p>“If it isn’t tested, it doesn’t work.” - <a href="https://courses.cs.washington.edu/courses/cse403/06wi/misc/colwell-testing.pdf">Bob Colwell</a></p><section id="why-to-write-unit-tests" class="level3"><h3>Why To Write Unit Tests</h3><p>Testing is essential, testing is hopeless. If you are changing code that works, fixing code that doesn’t, or writing new code, you need a way to tell when it isn’t broken. Computers and the demands placed on them by software applications are now so complicated that any hope of testing them to saturation is lost. You cannot wait long enough for every possible input to each permutation of your code execution path to be analyzed. Without unit testing, you will not be able to prove that a piece of code does what it is intended to do, unless you exercise the entire system under realistic conditions - the malady a developer named Lindsay Page once referred to as “driving the car to see if the radio works.” So if you need to prove that a piece of code works, and you don’t have infinite time and money to devote to doing that, you need unit tests. You also need to write unit tests to crystallize something essential which is sometimes separate from the code - the <em>developer’s intent</em>.</p><p>It’s your job as the software engineer to exercise judgment, dicing the code into manageable units and distilling as many of the most important cases you can think of into a set of inputs and the expected set of outputs from those units.</p></section><section id="what-you-need" class="level3"><h3>What You Need</h3><ol type="1"><li>Expected inputs</li><li>Expected outputs</li><li>Some code</li><li>A way to run 3. and provide 1. to check the results against 2.</li></ol><p>If you don’t have 1. or 2., you are working on a piece of software with no requirements. If you are working on generative art, this is OK. If you are not, you need to show stakeholders (people with money or risk involved in your project) that your software does what they want, and doesn’t do what they don’t want.</p><p>Having specific requirements that change on timescales longer than your workday is essential to writing tests, and it may be a significant amount of work to get them from stakeholders so you can begin writing tests.</p><p>If you don’t have 3., don’t get any, otherwise you will have to write unit tests.</p><p>If you don’t have 4., you are in the right document.</p></section><section id="how-to-do-it" class="level3"><h3>How To Do It</h3><p>The process of unit testing is: isolate a chunk of code as much as possible, write code to compare the output to an expected value, run it, do this many times, and collect the results.</p><p>To isolate the unit under test (UUT), we will write code that <code>#include</code>s the code to test, or links to a compiled library. As necessary, we will lift dependencies by introducing stub functions for them or overwriting them with our own, simpler ones.</p><p>To write the test code, we will leverage a unit testing framework that provides macros to make checking for agreement between returned values and expected values quick and easy.</p><p>To run it, we will add the test code to our build system, and make sure the test executable runs as a part of the build process.</p><p>To collect the results, we will again leverage the unit testing framework to generate a test report.</p></section><section id="when-to-do-it" class="level3"><h3>When To Do It</h3><p>Entire books have been written about this topic, so I will try to simplify by suggesting when more tests should be written for the your big ugly legacy project, given that it is ostensibly already-working, field-tested code. Sometimes, the most cost-effective thing to do is nothing if the code works, but if any of these are true:</p><ul><li>You are about to write a new module</li><li>You are about to troubleshoot an old module</li><li>Commits <strong>repeatedly</strong> result in regressions</li><li>Flight code exhibits segmentation faults, race conditions, or memory leaks and <strong>workarounds</strong> are observed instead of root cause fixes</li><li>More than 60% of dev time is spent debugging (heuristic, your mileage may vary)</li></ul><p>then time needs be allocated to developing unit tests in the affected modules.</p></section><section id="choosing-a-unit-test-framework" class="level3"><h3>Choosing a Unit Test Framework</h3><p>There are <a href="https://en.wikipedia.org/wiki/List_of_unit_testing_frameworks">many more ways</a> to write unit tests than there are programming languages, so rationales for choosing one test framework over the other like personal preference, organizational inertia, and random chance are all good ones. The most important aspects of your chosen test framework to focus on are, in order:</p><ol type="1"><li>Having one</li><li>Speed: testing overhead must be small, so developers will want to run them early and often as part of their development routine</li><li>Extensible: it must be easy to add new tests, so developers will want to add new tests for their new features, and maintainers will want to add tests for legacy untested features</li></ol><p>The goal of this document is to describe a method for testing C/C++ code that accomplishes 1., and arguments can be made that it accomplishes 2. and 3. For C/C++ code, some of the <a href="https://www.jetbrains.com/lp/devecosystem-2021/cpp/">most popular</a> frameworks are Google Test, Catch, CppUnit, Boost.Test, and nothing. It would be nice to use Google Test for the TIM project because it’s well documented and the chances are high that we will see it again if we continue to work on C/C++ projects. However, it introduces a C++11 dependency, and the cleanest and easiest way to install it and maintain it on our target system is a feature added in a more recent version of CMake (3.11) than we have access to (&lt;= 3.0.5).</p><p>There are other test frameworks geared more toward C, and for this example we will use a lightweight one (2 headers, 1 source file) called <a href="http://www.throwtheswitch.org/unity">Unity</a>. This is advantageous for our project because it allows the flight software to continue to be self contained, and should not rely on fetching any code from the internet at build-time. Unity also has <a href="http://www.throwtheswitch.org/#download-section">more advanced companion tools</a> that may become useful if our testing needs grow.</p><p>Finally, learning any unit test framework is like learning a language, in that it will have benefits even if you go on to code in something other than C.</p></section><section id="unity" class="level3"><h3>Unity</h3><p>Unity is made by <a href="http://www.throwtheswitch.org/">ThrowTheSwitch.org</a>.</p><p>There is a useful <a href="https://github.com/ThrowTheSwitch/Unity/blob/master/docs/UnityGettingStartedGuide.md">Getting Started</a> guide.</p><p>A quick and dirty way to make the Unity source available could be embedding itin the repo so it can be found by more than one executable.</p><p>There is a tradeoff here: embedding a copy of the Unity source makes it more difficult to accept updates to it from upstream, but it makes writing CMakeLists.txt files easier. In this example, I set aside my usual preference to have dependencies managed separate from flight code because I think writing CMake will happen more often than pulling Unity updates.</p><section id="the-simple-example" class="level4"><h4>The Simple Example</h4><p>An example of Unity in action might look like this:</p><pre><code>evanmayer@framework:~/unittest_example$ tree -L 2
+.
+├── CMakeLists.txt
+├── external
+│   ├── CMakeLists.txt
+│   └── Unity-2.5.2
+└── src
+    ├── add_example.c
+    ├── add_example.h
+    ├── CMakeLists.txt
+    └── test_add.c</code></pre><p>It was produced by following a tutorial by <a href="https://www.poisel.info/posts/2019-07-15-cmake-unity-integration/">Rainer Poisel</a>.</p><p>The toplevel CMakeLists.txt points at the lower ones:</p><ul><li><code>src/CMakeLists.txt</code> builds the code under test and builds the test code into an executable by linking to the code under test and Unity, then adds it to a list of tests registered with CTest</li><li><code>external/CMakeLists.txt</code> builds Unity into a public static library for the test code to link to</li></ul><p>Here is what the test code in <code>test_add.c</code> looks like:</p><div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;unity.h&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;add_example.h&quot;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> setUp<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// set stuff up here, if needed</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> tearDown<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// clean stuff up here, if needed</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> test_AddOnePlusOne<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> a <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> b <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    TEST_ASSERT_EQUAL<span class="op">(</span><span class="dv">2</span><span class="op">,</span> add_example<span class="op">(</span>a<span class="op">,</span> b<span class="op">));</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    UNITY_BEGIN<span class="op">();</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    RUN_TEST<span class="op">(</span>test_AddOnePlusOne<span class="op">);</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">// append additional tests here</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> UNITY_END<span class="op">();</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><p>To build and run the tests:</p><div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cmake</span> <span class="at">-S</span> . <span class="at">-B</span> build</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cmake</span> <span class="at">--build</span> build</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> build/ <span class="kw">&amp;&amp;</span> <span class="ex">ctest</span> <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> ..</span></code></pre></div><p>Which should yield:</p><pre><code>Test project /home/evanmayer/unittest_example/build
+    Start 1: add_example_test
+1/1 Test #1: add_example_test .................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.00 sec</code></pre><p>As you can see, unit testing is compatible with an existing CMake build system, the test code can be made short and easy to write with Unity’s macros, and running the tests with <code>ctest</code> generates a test report. All that’s left is to apply this strategy to your code.</p><p><br> <br> <br></p></section></section></section><section id="is-my-application-real-time" class="level2"><h2>Is my application “real-time”? <a name="2022-07-14"></a></h2><hr /><p><em>2022-07-14</em></p><section id="what-is-real-time" class="level3"><h3>What is “real-time”?</h3><p>Software for aerospace and industrial systems has different requirements than most software people regularly interact with. It may have stringent deadlines to meet when interacting with the real world or other systems which, if not met, result in behavior that could endanger the mission goals, the system itself, or things around the system (such as people or property).</p><p>For example: an electronic coffee machine heats water from a starting temperature to one set by the user. To heat the coffee, it energizes a heating element. To determine the present temperature, it reads a thermometer. In order to stop heating the water at the appropriate time to avoid overheating and boiling off all the water, it must measure the temperature at a given rate, perform a calculation (like the difference between the present temperature and the set point), determine whether the heater should be on or off, and command the heater if necessary. What happens if any one of these steps is delayed? If the temperature probe does not return a valid measurement for several seconds for some reason, and the rest of the system does not have any means to compensate for missing measurements, the temperature may miss the set point, resulting in poor temperature control or excess water boil-off.</p><p>The consequences of any mis-timing in even this simple system depend on the frequency and magnitude of the mis-timing event. If a temperature query or heater on/off command deadline is intended to happen every 100 Hz, but is delayed one time by a dozen milliseconds in a 3-minute run of the coffee machine, the end user will not notice and the coffee quality or boiler safety will not be impacted. However, if it happens more often or with greater severity, the chance of failure goes up!</p><p>This simple illustration introduces a few principles of real-time systems that impact their design and testing:</p><ul><li>The system needs to be fast enough to minimize the severity of exceptional circumstances where a deadline is not met</li><li>It also needs to be stable enough to minimize the number of these occurrences</li></ul><p>In my opinion, there is no black and white “real-time,” only “fast enough” and “stable enough” for the application’s requirements! The coffee machine controller may be fine to heat a boiler of hot water, but risks failing spectacularly when it is required to control cooling of a pulsed laser.</p><p><a href="https://rt.wiki.kernel.org/index.php/Frequently_Asked_Questions#What_is_real-time.3F">Linux RT FAQ: What is real-time?</a></p><section id="hard-and-soft-real-time" class="level4"><h4>“Hard” and “soft” real-time</h4><p>You may also read authors that categorize systems as “hard” and “soft” real-time by the system’s tolerance of missing a deadline. Some refer to “hard real-time” systems as those that exhibit catastrophic failure if a deadline is missed even once, and “soft real-time” systems as those that experience degraded performance, but not failure, under multiple missed deadlines. Other definitions exist. For example, some may differentiate between the two by their method of scheduling tasks.</p></section></section><section id="linux-real-time" class="level3"><h3>Linux real time</h3><p>Running software for a complex vehicle on a PC with a Linux operating system turns the problems illustrated above up to eleven. There are many sensors and actuators to interact with the outside world, and the operating system itself has various tasks to run, which may not be on a predictable cadence. The resource needs of the system fluctuate. In order to deal with this fluctuation and the reality that there may sometimes be insufficient resources (CPU cycles vs. time, memory) to perform the necessary tasks, we must carefully set up our system.</p><p>If the system is not able to completely eliminate all events that would be severe enough to cause a failure, it must have safeguards in place to deal with them, such as giving up on a blocking process and re-using an older sensor value, or predicting a new one from past data.</p><p>The most important point is that ALL of the measures outlined below work together to limit the frequency and severity of events that “break real time.”</p><blockquote><p>NOTE: This is a good (but evolving) resource on it: <a href="https://rt.wiki.kernel.org/index.php/Main_Page">https://rt.wiki.kernel.org/index.php/Main_Page</a></p></blockquote><section id="kernel-options" class="level4"><h4>Kernel options</h4><p>The Linux kernel is a <a href="https://en.wikipedia.org/wiki/Kernel_(operating_system)">low-level program</a> that controls important tasks in the operating system. Generally, these tasks cannot be stopped (“preempted”) in order to execute a higher-priority task that comes along, except in <a href="https://rt.wiki.kernel.org/index.php/Frequently_Asked_Questions#What_are_real-time_capabilities_of_the_stock_2.6_linux_kernel.3F">certain circumstances</a>. This can lead to occasional latency between when a user-space program requests a resource to when it becomes available, on the order of milliseconds to seconds. The kernel code can be compiled with an option, <code>CONFIG_PREEMPT</code>, that expands the coverage of code that can be preempted by higher-priority tasks, making typical worst-case latency outside of some device driver code single digit milliseconds, and making latency much more predictable overall.</p></section><section id="the-rt-kernel-patch" class="level4"><h4>The RT kernel patch</h4><p>A <a href="https://rt.wiki.kernel.org/index.php/Frequently_Asked_Questions#How_does_the_CONFIG_PREEMPT_RT_patch_work.3F"><code>CONFIG_PREEMPT_RT</code> patch</a> is available that further modifies kernel code to allow more chunks of code to be preempted, further decreasing the worst-case latency.</p><p>The kernel code must be <a href="https://chenna.me/blog/2020/02/23/how-to-setup-preempt-rt-on-ubuntu-18-04/">downloaded, compiled, and the current kernel must be patched</a>.</p><p>There are <a href="https://lwn.net/Articles/146861/">various options</a> that can change the behavior of the kernel to make it more suitable for real-time operation.</p><p>Or, you may be able to find a prepackaged kernel version to install with <code>apt</code>:</p><p><code>sudo apt search linux-image</code></p><p><code>sudo apt install linux-image-rt-amd64</code></p></section><section id="the-application" class="level4"><h4>The application</h4><p><strong>It’s not enough to simply patch the kernel.</strong> The application must be written and executed with specific attention paid to how resources are requested and used by the program.</p><p>I think this <a href="https://rt.wiki.kernel.org/index.php/HOWTO:_Build_an_RT-application">how to build a RT application guide</a> is mandatory reading, even if you don’t fully understand every word. A quick summary of the categories of gotchas to pay attention to:</p><ul><li>CPU stuff<ul><li>Power management settings - OS may slow down or vary CPU clock speed. A slower CPU speed obviously changes performance, but <em>changing</em> the clock speed also has an overhead. Also goes for other CPU power states, e.g. putting CPUs to sleep and waking them up</li><li>CPU allocation - The application should be bound to a specific CPU or set of CPUs, to avoid overhead involved in changing between them</li></ul></li><li>Application priority<ul><li>An elevated priority must be assigned to the application in order to allow it to preempt other things. Real-time processes have access to priorities from 1-99, typically something in the 80s is selected. Avoid 99, because it should be reserved for critical processes such as a watchdog to shut down infinite looping real-time processes.</li></ul></li><li>Memory usage<ul><li>Page faults - roughly, attempting to access memory that has been marked for cleanup, any may not be in physical memory. Can trigger an action like loading from disk to RAM. Extremely difficult to predict, so random source of non-determinism. Avoid it by profiling an application’s (or thread’s) memory usage, and <a href="https://www.oreilly.com/library/view/embedded-linux-for/9781787124202/ch32s10.html">locking down</a> enough memory as soon as you can in your program - call dibs. You can’t avoid page faults at startup when you lock everything down, but you can start up the program and incur all your page faults before your system is put into a situation where it NEEDS to be real-time compliant.<ul><li>This means you must program in a way many developers are unfamiliar with - avoiding dynamic memory allocation at all costs to avoid costly page faults means preallocating as much memory as you will EVER need for a task during an <code>initialize()</code> function.</li></ul></li></ul></li><li>Loops<ul><li>For strict determinism, all loops in software should execute a consistent number of times - loops with variable end conditions can add jitter</li></ul></li><li>Input/output<ul><li>All I/O access will incur a penalty due to the laws of physics - HDD arms must move, SSD capacitors must charge/discharge, etc. They should be sequestered to their own thread/CPU to offload I/O from the RT parts of the code.</li></ul></li></ul></section></section><section id="more-info" class="level3"><h3>More info:</h3><ul><li><a href="https://lwn.net/Articles/146861/">https://lwn.net/Articles/146861/</a></li><li><a href="https://rt.wiki.kernel.org/index.php/Main_Page">https://rt.wiki.kernel.org/index.php/Main_Page</a></li><li><a href="https://elinux.org/images/d/de/Real_Time_Linux_Scheduling_Performance_Comparison.pdf">https://elinux.org/images/d/de/Real_Time_Linux_Scheduling_Performance_Comparison.pdf</a></li><li><a href="https://rt-labs.com/docs/p-net/linuxtiming.html">https://rt-labs.com/docs/p-net/linuxtiming.html</a></li><li><a href="https://chenna.me/blog/2020/02/23/how-to-setup-preempt-rt-on-ubuntu-18-04/">https://chenna.me/blog/2020/02/23/how-to-setup-preempt-rt-on-ubuntu-18-04/</a></li><li><a href="https://wiki.linuxfoundation.org/realtime/documentation/howto/tools/cyclictest/start">https://wiki.linuxfoundation.org/realtime/documentation/howto/tools/cyclictest/start</a></li><li><a href="http://www.cs.ru.nl/J.Hooman/DES/XenomaiExercises/Background.html">http://www.cs.ru.nl/J.Hooman/DES/XenomaiExercises/Background.html</a></li><li><a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.55.2137&amp;rep=rep1&amp;type=pdf">https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.55.2137&amp;rep=rep1&amp;type=pdf</a></li></ul></section></section>
+</body>
+</html>
