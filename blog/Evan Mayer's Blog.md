@@ -1,8 +1,232 @@
 # Table of Contents
 
+* [How I learned Arduino is Little-Endian](#2023-02-21)
 * [Version Control of Large Files with `git-lfs`](#2022-07-30)
 * [How to write unit tests](#2022-07-19)
 * [Is my application "real-time"?](#2022-07-14)
+
+# How I learned Arduino is Little-Endian<a name="2023-02-21"></a>
+
+---
+
+*2023-02-21*
+
+I thought it would be interesting to create a piece of hardware that emulates the function of a gyroscope, so I could use it in testing without having expensive flight hardware around, program it to send arbitrary gyro signals to the flight software, and learn more about the flight software.
+
+I decided to slice into the flight software at the serial interface. There are a couple of ways I know how to approach this:
+
+1. [Set up a pseudoterminal](https://linux.die.net/man/4/ptmx) using another C program (or another thread in the current program) and send bytes through that to emulate bytes from a real serial port
+2. Create a device that emulates the gyros and attach it to the real serial port
+
+\1. is definitely possible; I do this as part of a unit test already. Part of a `cmocka` fixture helps with mocking stepper motors that talk over serial:
+
+```c
+// Spoof actuator bus: open a pseudoterminal and give it to the bus init,
+// where the attributes (baud, etc.) will be set.
+int fd = getpt();
+char *ttyName;
+ttyName = ptsname(fd);
+if (-1 == unlockpt(fd)) {
+    fail_msg("Failed to open pseudoterminal in SetupEzBus(): %s", strerror(errno));
+}
+```
+
+From that point on, the program would just use the created pseudoterminal's name, `ttyName`, to open a connection, configure parameters, and start talking. We'd need to symlink whatever name we've been given in `ttyName` to tie it to the port the flight code expects to talk to the gyros on, `/dev/ttyGYRO0`/`/dev/ttyGYRO1`, which is a little more difficult on the fly, but doable.
+
+\2. should be possible, but I've never done it before, and it seems way cooler. This should be possible with any Arduino with a high enough clock speed to support higher baudrates, like the required 921600 of the gyros.
+
+I wrote this code to write gyro packets and send them out via serial:
+
+```c
+#include <CRC.h>
+
+
+// The gyro packet set by a KVH dsp1760
+typedef union
+{
+    struct
+    {
+        uint32_t header;
+        union
+        {
+            float x;  /// X-axis rotational speed or incremental angle in radians or degrees (config dependent)
+            uint32_t x_raw;
+        };
+        union
+        {
+            float y;  /// Y-axis rotational speed or incremental angle in radians or degrees (config dependent)
+            uint32_t y_raw;
+        };
+        union
+        {
+            float z;  /// Z-axis rotational speed or incremental angle in radians or degrees (config dependent)
+            uint32_t z_raw;
+        };
+
+        uint8_t reserved[12]; /// Unused
+
+        uint8_t status;     /// status per gyro.  Use DSP1760_STATUS_MASK* 1=valid data, 0=invalid data
+        uint8_t sequence;   /// 0-127 incrementing sequence of packets
+        int16_t temp;       /// Temperature data, rounded to nearest whole degree (C or F selectable)
+        uint32_t crc;
+    }__attribute__((packed));
+    uint8_t raw_data[36];
+} dsp1760_std_t;
+
+// a basis for each packet we will send
+dsp1760_std_t packet_primitive = {{
+    .header = 0xFE81FF55,
+    .x_raw = 0,
+    .y_raw = 0,
+    .z_raw = 0,
+    .reserved = {42,42,42,42,42,42,42,42,42,42,42,42,},
+    .status = 1,
+    .sequence = 0,
+    .temp = 42,
+    .crc = 0,
+}};
+
+dsp1760_std_t new_gyro_packet(void) {
+    static uint8_t i = 0;
+    dsp1760_std_t pkt = packet_primitive;
+
+    // Add fake gyro data here
+    uint32_t amp = 40;
+    // x,y,z, ramps over all available values with different phases
+    pkt.x_raw = (i + (amp / 4)) % amp;
+    pkt.y_raw = (i + (amp / 2)) % amp;
+    pkt.z_raw = (i + (3 * amp / 4)) % amp;
+    pkt.sequence = i;
+
+    uint32_t crc = crc32((byte*) &pkt, 32, 0x04C11DB7, 0xFFFFFFFF, 0, false, false);
+
+    i = (i + 1) % 127;
+
+    return pkt;
+}
+
+void setup() {
+    Serial.begin(921600);
+}
+
+void loop() {
+    dsp1760_std_t pkt = new_gyro_packet();
+    
+    Serial.write( (byte*) &pkt, sizeof(pkt));
+
+    delay(1);
+}
+```
+
+The packet structure as lifted from the flight code is interesting: a union, such that it can be accessed by fields or as 36 raw bytes, and some fields can be read as floats or raw bytes, because they're unions too!
+
+The most difficult part is creating the [CRC](https://en.wikipedia.org/wiki/Cyclic_redundancy_check), which is an implementation from a CRC-calculating [library](https://github.com/RobTillaart/CRC).
+
+After flashing the code to an [Adafruit Trinket M0](https://www.adafruit.com/product/3500)[^1], plugging it in, and adding the new USB device to the [VirtualBox USB passthrough](https://www.linuxbabe.com/virtualbox/access-usb-from-virtualbox-guest-os),  it was ready to spew at the flight software running in the virtual machine.
+
+It shows up as `/dev/ttyACM0`, so we pretend it is actually a gyro that the flight software is looking for:
+
+`sudo ln -s /dev/ttyACM0 /dev/ttyGYRO0`
+
+Then run the flight software in the debugger:
+
+`sudo gdb --args ./mcp -x`
+
+We see that we attempt to churn through the serial buffer, throwing away bytes until we see the unique gyro header, which is `0xFE81FF55`. In `dsp1760.c:270`:
+
+```c
+/// We loop here to catch multiple packets that may have been delivered since we last read
+    while (ph_bufq_discard_until(m_serial->rbuf, header, 4)) {
+```
+
+where `const char header[4] = { 0xFE, 0x81, 0xFF, 0x55 };` can be interpreted in decimal as `254 129 255 85`. The only problem is, we don't ever seem to see the header!
+
+Dredging deep into the bowels of `ph_bufq_discard_until`, we come to the comparison of the expected packet header:
+
+```
+(gdb) x/4ub delim
+0x7fffffffd3a4:	254	129	255	85
+```
+
+with the raw buffer memory:
+
+```
+(gdb) x/4ub bstart
+0x55555713ec60:	85	255	129	254
+```
+
+Wow! What gives? It looks like the buffer has the header, but it's all backward! What's in the rest of the packet?
+
+```
+(gdb) x/36ub bstart
+0x55555713ec60:	85	255	129	254	21	0	0	0
+0x55555713ec68:	31	0	0	0	1	0	0	0
+0x55555713ec70:	42	42	42	42	42	42	42	42
+0x55555713ec78:	42	42	42	42	1	11	42	0
+0x55555713ec80:	10	11	226	208
+```
+
+Breaking it down according to the packet struct above, we should have:
+
+```
+header: 85	255	129	254
+x_raw: 21	0	0	0
+y_raw: 31	0	0	0
+z_raw: 1	0	0	0
+reserved: 42 42	42	42	42	42	42	42	42	42	42	42
+status: 1
+sequence: 11 
+temperature: 42 0
+crc: 10	11	226	208
+```
+
+We see that all the struct member boundaries fall in the right places, but the byte order is reversed. The header is backward, the fake raw gyro values are 21, 31, and 1, but have empty trailing bytes, and the 2-byte temperature integer also has an empty trailing byte.
+
+Sure enough, Arduino `Serial.write()` sends the [least significant byte first](https://forum.arduino.cc/t/understanding-byte-order-little-endian-in-arduino-serial-communication/126797/2). 
+
+So how can we fix it so the header is recognized and the rest of the data isn't scrambled?
+
+Well, maybe we could have the poor microcontroller write one byte of the struct at a time with individual calls to `Serial.write()`. That's very uncool for various reasons. We could also employ a version of `htonl()` and `htons()`, and convert these integers to network-long and network-short byte order, because network byte order is big-endian:
+
+```c
+#define htons(x) ( ((x)<< 8 & 0xFF00) | \
+                   ((x)>> 8 & 0x00FF) )
+#define htonl(x) ( ((x)<<24 & 0xFF000000UL) | \
+                   ((x)<< 8 & 0x00FF0000UL) | \
+                   ((x)>> 8 & 0x0000FF00UL) | \
+                   ((x)>>24 & 0x000000FFUL) )
+```
+
+Now what do we get when we run our code?
+
+```
+(gdb) x/36ub bstart
+0x55555713ec60:	254	129	255	85	0	0	0	13
+0x55555713ec68:	0	0	0	23	0	0	0	33
+0x55555713ec70:	42	42	42	42	42	42	42	42
+0x55555713ec78:	42	42	42	42	1	3	0	42
+0x55555713ec80:	88	221	0	0
+```
+
+Looking much better! The gyro code is now receiving fake packets, and we have no indication of corrupted data, meaning the CRC we attached is valid.
+
+```
+-Feb-23-23 03:48:37.094- Schedu: dsp1760.c:309 (dsp1760_process_data):Gyro0: x_raw=0, y_raw=10, z_raw=20, reserved = e331272c, status=1, seq=46, temp=42, crc=ff3b50f6
+-Feb-23-23 03:48:37.095- Schedu: dsp1760.c:309 (dsp1760_process_data):Gyro0: x_raw=1, y_raw=11, z_raw=21, reserved = e3312750, status=1, seq=47, temp=42, crc=dc3f6ee8
+-Feb-23-23 03:48:37.096- Schedu: dsp1760.c:309 (dsp1760_process_data):Gyro0: x_raw=2, y_raw=12, z_raw=22, reserved = e3312774, status=1, seq=48, temp=42, crc=74f62fd8
+-Feb-23-23 03:48:37.097- Schedu: dsp1760.c:309 (dsp1760_process_data):Gyro0: x_raw=3, y_raw=13, z_raw=23, reserved = e3312798, status=1, seq=49, temp=42, crc=57f211c6
+...
+```
+
+Now, we have a programmable surrogate for the gyroscope.
+
+[^1]: Chosen for its absurdly high clock speed/$ ratio: 48 MHz = 3x Arduino Uno, for <$10!
+
+
+
+<br>
+<br>
+<br>
 
 # Version Control of Large Files with `git-lfs`<a name="2022-07-30"></a>
 
