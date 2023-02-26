@@ -37,6 +37,7 @@ From that point on, the program would just use the created pseudoterminal's name
 
 I wrote this code to write gyro packets and send them out via serial:
 
+{% raw %}
 ```c
 #include <CRC.h>
 
@@ -117,6 +118,7 @@ void loop() {
     delay(1);
 }
 ```
+{% endraw %}
 
 The packet structure as lifted from the flight code is interesting: a union, such that it can be accessed by fields or as 36 raw bytes, and some fields can be read as floats or raw bytes, because they're unions too!
 
